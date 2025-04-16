@@ -10,6 +10,7 @@ import (
 
 type Querier interface {
 	CreateMessage(ctx context.Context, arg CreateMessageParams) (Message, error)
+	CreateOrder(ctx context.Context, arg CreateOrderParams) (Order, error)
 	CreateThread(ctx context.Context, topic string) (Thread, error)
 	DeleteMessageByID(ctx context.Context, id string) error
 	GetMessageByID(ctx context.Context, id string) (Message, error)

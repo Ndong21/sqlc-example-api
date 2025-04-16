@@ -16,6 +16,13 @@ type Message struct {
 	CreatedAt pgtype.Timestamp `json:"created_at"`
 }
 
+type Order struct {
+	ID     string `json:"id"`
+	Item   string `json:"item"`
+	Amount string `json:"amount"`
+	Number string `json:"number"`
+}
+
 type Thread struct {
 	ID        int32            `json:"id"`
 	Topic     string           `json:"topic"`

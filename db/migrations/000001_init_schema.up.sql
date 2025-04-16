@@ -15,3 +15,10 @@ CREATE TABLE "message" (
   FOREIGN KEY (thread_id) REFERENCES thread (id)
 );
 
+CREATE TABLE "orders" (
+  "id" VARCHAR(36) PRIMARY KEY DEFAULT gen_random_uuid()::varchar(36),
+  "item" TEXT NOT NULL,
+  "amount" TEXT NOT NULL,
+  "number" TEXT NOT NULL
+)
+

@@ -26,3 +26,8 @@ ORDER BY created_at DESC;
 -- name: DeleteMessageByID :exec
 DELETE FROM message
 WHERE id = $1;
+
+-- name: CreateOrder :one
+INSERT INTO "orders" (item,amount,number)
+VALUES ($1,$2,$3)
+RETURNING *;

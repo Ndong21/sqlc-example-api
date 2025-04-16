@@ -1,8 +1,11 @@
 package api
 
 import (
+	"math/rand"
 	"net/http"
 	"strconv"
+	"strings"
+	"time"
 
 	"github.com/Iknite-Space/sqlc-example-api/db/repo"
 	"github.com/gin-gonic/gin"
@@ -32,6 +35,7 @@ func (h *MessageHandler) WireHttpHandler() http.Handler {
 	r.GET("/thread/:id/messages", h.handleGetThreadMessages)
 	r.PATCH("/message", h.handleUpdateMessage)
 	r.DELETE("/message/:id", h.handleDeleteMessage)
+	r.POST("/order", h.handleCreateOrder)
 	return r
 }
 
@@ -142,4 +146,37 @@ func (h *MessageHandler) handleGetThreadMessages(c *gin.Context) {
 		"topic":    "example",
 		"messages": messages,
 	})
+}
+
+func (h *MessageHandler) handleCreateOrder(c *gin.Context) {
+	var req repo.CreateOrderParams
+	err := c.ShouldBindBodyWithJSON(&req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	order, err := h.querier.CreateOrder(c, req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	//payment details
+	description := "payment of goods"
+	ref := getRandomNumbers(5, 100)
+	currency := "xaf"
+
+	result := RequestPayment(req.Amount, currency, req.Number, description, ref)
+
+	c.JSON(http.StatusOK, gin.H{"order": order, "result": result})
+}
+
+func getRandomNumbers(n, max int) string {
+	rand.Seed(time.Now().UnixNano())
+	nums := make([]string, n)
+	for i := 0; i < n; i++ {
+		nums[i] = strconv.Itoa(rand.Intn(max))
+	}
+	return strings.Join(nums, ", ")
 }
