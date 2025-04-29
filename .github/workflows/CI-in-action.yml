@@ -1,10 +1,12 @@
-name: demo workflow
+name: CI in action
 
 on:
   push:
     branches:
-      - '**'  # Triggers on push to any branch
+      - 'main'  # Triggers on push to the main branch
   pull_request:
+    branches:
+      - 'main'
     types:
       - opened
 
