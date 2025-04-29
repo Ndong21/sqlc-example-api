@@ -1,0 +1,12 @@
+name: demo workflow
+
+on:
+  push:
+
+jobs:
+  vulcheck:
+    name: Vulnerability checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run a one-line script
+        run: echo Hello, world!
