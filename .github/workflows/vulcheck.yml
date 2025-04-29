@@ -2,6 +2,8 @@ name: demo workflow
 
 on:
   push:
+    branches:
+      - '**'  # Triggers on push to any branch
 
 # jobs:
 #   golangci:
