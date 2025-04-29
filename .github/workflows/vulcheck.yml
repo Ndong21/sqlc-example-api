@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - '**'  # Triggers on push to any branch
+  pull_request:
+    types:
+      - opened
 
 jobs:
   golangci:
