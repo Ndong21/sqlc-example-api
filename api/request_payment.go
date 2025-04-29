@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 )
 
 // This function initiates a payment request
-func RequestPayment(amount, currency, number, description, reference string) string {
+func RequestPayment(amount, currency, number, description, reference string) (string, error) {
 
 	//load the api-key from the .env file, handle errors if they occur
 	key := os.Getenv("key")
@@ -70,13 +71,22 @@ func RequestPayment(amount, currency, number, description, reference string) str
 	if err != nil {
 		fmt.Println("error occured", err)
 	}
-	defer resp.Body.Close()
+
+	defer func() {
+		err := resp.Body.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
 
 	var result Data
 	// decode the body of the response to a readable format using the sresult tructs
-	json.NewDecoder(resp.Body).Decode(&result)
+	error := json.NewDecoder(resp.Body).Decode(&result)
+	if error != nil {
+		log.Fatal(error)
+	}
 
 	//obtain the transaction reference from the response body
 	//this reference will be used to check the status of the transaction
-	return result.Reference
+	return result.Reference, err
 }
