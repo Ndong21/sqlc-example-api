@@ -1,6 +1,7 @@
 package api
 
 import (
+	"log"
 	"math/rand"
 	"net/http"
 	"strconv"
@@ -167,16 +168,23 @@ func (h *MessageHandler) handleCreateOrder(c *gin.Context) {
 	ref := getRandomNumbers(5, 100)
 	currency := "xaf"
 
-	result := RequestPayment(req.Amount, currency, req.Number, description, ref)
+	result, err := RequestPayment(req.Amount, currency, req.Number, description, ref)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	c.JSON(http.StatusOK, gin.H{"order": order, "result": result})
 }
 
 func getRandomNumbers(n, max int) string {
-	rand.Seed(time.Now().UnixNano())
+	if n <= 0 || max <= 0 {
+		return ""
+	}
+
+	rnd := rand.New(rand.NewSource(time.Now().UnixNano())) // local generator
 	nums := make([]string, n)
 	for i := 0; i < n; i++ {
-		nums[i] = strconv.Itoa(rand.Intn(max))
+		nums[i] = strconv.Itoa(rnd.Intn(max))
 	}
 	return strings.Join(nums, ", ")
 }
