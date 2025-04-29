@@ -10,8 +10,21 @@ import (
 
 type Message struct {
 	ID        string           `json:"id"`
-	Thread    string           `json:"thread"`
+	ThreadID  int32            `json:"thread_id"`
 	Sender    string           `json:"sender"`
 	Content   string           `json:"content"`
+	CreatedAt pgtype.Timestamp `json:"created_at"`
+}
+
+type Order struct {
+	ID     string `json:"id"`
+	Item   string `json:"item"`
+	Amount string `json:"amount"`
+	Number string `json:"number"`
+}
+
+type Thread struct {
+	ID        int32            `json:"id"`
+	Topic     string           `json:"topic"`
 	CreatedAt pgtype.Timestamp `json:"created_at"`
 }
