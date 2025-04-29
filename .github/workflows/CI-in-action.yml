@@ -25,7 +25,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v7
 
-  govulncheck_job:
+  govulncheck:
     runs-on: ubuntu-latest
     name: Run govulncheck
     steps:
@@ -51,6 +51,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     name: Run Build
+
+    needs: [govulncheck, test_app]
     
     steps:
       - name: checkout code
