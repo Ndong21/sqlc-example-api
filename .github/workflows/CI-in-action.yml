@@ -14,7 +14,7 @@ on:
 # This workflow has 4 jobs
 jobs:
 
-  # This job checks for vulnerability using GitHub Actions from the market place
+  # This job checks for vulnerability using GitHub Actions from the market place 
   govulncheck:
     runs-on: ubuntu-latest
 
