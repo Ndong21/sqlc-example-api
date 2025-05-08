@@ -44,8 +44,6 @@ func RequestPayment(amount, currency, number, description, reference string) (st
 	jsonData, err := json.Marshal(data)
 	if err != nil {
 		fmt.Printf("error: %s", err.Error())
-	} else {
-		fmt.Println(string(jsonData))
 	}
 
 	//initialize an http client.
